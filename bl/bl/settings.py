@@ -62,7 +62,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'bl.urls'
 CORS_ALLOWED_ORIGINS=[
-    'http://localhost:5173'
+    'http://localhost:5173',
+    "https://blog-ten-delta-56.vercel.app"
 ]
 
 TEMPLATES = [
