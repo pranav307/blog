@@ -20,6 +20,8 @@ from bl.utils.storage import upload_file_to_supabase
 from django.http import HttpResponse
 User = get_user_model()
 
+def home(request):
+    return HttpResponse("ho gaya")
 def dashboard(request):
     return HttpResponse(" <h1> Admin Dashboard </h1> ")
 class RegisterUser(APIView):
