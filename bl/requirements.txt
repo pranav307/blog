@@ -12,8 +12,8 @@ djangorestframework_simplejwt==5.5.1
 django-cors-headers==4.7.0
 
 # --- Env handling ---
-django-dotenv==1.4.2
-
+# django-dotenv==1.4.2
+python-dotenv==1.2.1
 # --- Production server (Linux only) ---
 gunicorn==23.0.0
 
