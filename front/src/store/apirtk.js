@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-export const baseurl="http://127.0.0.1:8000/"
+export const baseurl="https://blog-production-14ae.up.railway.app/"
 export const access=localStorage.getItem("access") || null
 export const user=JSON.parse(localStorage.getItem("user")) || null
 export const refresh=localStorage.getItem("refresh") || null
