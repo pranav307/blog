@@ -26,3 +26,6 @@ django_celery_results==2.6.0
 
 # --- Debug / Profiling (optional, prod me usually off) ---
 django-silk==5.4.3
+supabase==2.27.0
+supabase-auth==2.27.0
+supabase-functions==2.27.0
