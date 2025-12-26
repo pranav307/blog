@@ -1,0 +1,92 @@
+
+
+###
+POST http://127.0.0.1:8000/u/re/
+Content-Type: application/json
+
+{
+  "username": "q",
+  "email": "t@g.com",
+  "password": "Strongp123"
+}
+
+###
+POST http://127.0.0.1:8000/u/to/
+Content-Type: application/json
+
+{
+   "email": "te@g.com",
+  "password": "Strongp123"
+}
+
+###
+# GET http://127.0.0.1:8000/verifyurl/Mw/d14qnj-abeb34d9e4113fff3c8344d83a564230/
+###
+PATCH  http://127.0.0.1:8000/u/pro/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NjgzMDQ5LCJpYXQiOjE3NjYyNTEwNDksImp0aSI6IjcwZmQ0OWJmMWZkNjQyMjlhY2IwMzlmMmFkNzk3ZDdhIiwidXNlcl9pZCI6IjMifQ.GtIix0XRenDrlOzpd_Ky6ITGvXzdYKGN9qUDnd2x0mI
+
+
+{
+  "display_name": "Pranav Singh",
+  "bio": "Full-stack developer and technical blogger. I write about Django, REST APIs, and system design.",
+  "profile_image": "https://example.com/media/profiles/pranav.jpg",
+  "website": "https://pranavdev.blog",
+  "location": "India",
+  "twitter": "https://twitter.com/pranavdev",
+  "linkedin": "https://linkedin.com/in/pranavsingh",
+  "github": "https://github.com/pranav307"
+  
+ 
+}
+
+
+###
+POST http://127.0.0.1:8000/u/plist/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2ODIzNTg1LCJpYXQiOjE3NjYzOTE1ODUsImp0aSI6ImJhMjg1Nzc3YTE2YjQzNzA5OTcyOTRkOTYyM2VlNWE0IiwidXNlcl9pZCI6IjQifQ.OrMh8Jf0A6o5J658l_qi11DoI2j8FmBqA3Ockef2q3g
+
+{
+  
+  "image1": "https://example.com/images/post1_main.jpg",
+  "image2": "https://example.com/images/post1_secondary.jpg",
+  "video": "https://example.com/videos/post1.mp4",
+  "title": "Django ",
+  
+  "description": "This post explains how to implement a like and unlike toggle system using Django REST Framework and ViewSets.",
+  "link1": "https://docs.djangoproject.com/en/5.0/",
+  "link2": "https://www.django-rest-framework.org/"
+}
+
+
+###
+GET http://127.0.0.1:8000/u/ard/4/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2ODIzNTg1LCJpYXQiOjE3NjYzOTE1ODUsImp0aSI6ImJhMjg1Nzc3YTE2YjQzNzA5OTcyOTRkOTYyM2VlNWE0IiwidXNlcl9pZCI6IjQifQ.OrMh8Jf0A6o5J658l_qi11DoI2j8FmBqA3Ockef2q3g
+
+
+###
+POST http://127.0.0.1:8000/u/1/li/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2ODIxODQ0LCJpYXQiOjE3NjYzODk4NDQsImp0aSI6IjQxYWRjY2U0MGZhNTQ1ODFhOWU0MmY4NWIwMjNmOWZkIiwidXNlcl9pZCI6IjQifQ.MBLTbUq1Y8BMpfgq-TlMVJYyrP3MsJ8YpcMvgVqnQxY
+
+###
+POST http://127.0.0.1:8000/u/cm/ccom/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2ODI2MDMwLCJpYXQiOjE3NjYzOTQwMzAsImp0aSI6IjVmNmI5NGQ4YWU3ZjRhOGRiN2QwZTljNzczNzI5MWM4IiwidXNlcl9pZCI6IjQifQ.h1tLiyiJeg-C6J4d2rPdUfUC5hUGF4vJmZmxdnu1uKQ 
+
+{ 
+
+  "parent":6,
+  "post_id":2,
+  "content":"fiurhfuhwmmmfuwrkkkffrkkhw"
+}
+###
+
+GET http://127.0.0.1:8000/u/cm/?post_id=2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2ODI2MDMwLCJpYXQiOjE3NjYzOTQwMzAsImp0aSI6IjVmNmI5NGQ4YWU3ZjRhOGRiN2QwZTljNzczNzI5MWM4IiwidXNlcl9pZCI6IjQifQ.h1tLiyiJeg-C6J4d2rPdUfUC5hUGF4vJmZmxdnu1uKQ 
+
+###
+GET http://127.0.0.1:8000/u/pl/
+
+###
+GET http://127.0.0.1:8000/u/t/
+
