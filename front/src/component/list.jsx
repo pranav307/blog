@@ -22,3 +22,5 @@ function Postlist(){
     </div>
   )
 }
+
+export default Postlist
