@@ -9,6 +9,7 @@ export const apipost=createApi({
         baseUrl:baseurl,
         // credentials:'include',
         prepareHeaders:async(headers)=>{
+           
            headers.set('content-type','application/json')
            return headers
         }
