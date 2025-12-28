@@ -69,6 +69,7 @@ class Profileseriallizer(serializers.ModelSerializer):
             "slug",
             "created_at",
             "updated_at",
+            'user'
         ]
         # read_only_fields = ["slug", "created_at", "updated_at"]
         extra_kwargs = {
