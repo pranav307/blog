@@ -89,7 +89,7 @@ class Postseriallizer(serializers.ModelSerializer):
     media=serializers.PrimaryKeyRelatedField(many=True,read_only=True)
     class Meta:
         model=Postarticle
-        fields=['id','user','title','description','category','link1','link2','created_at','like_count','compost']
+        fields=['id','user','title','description','category','link1','link2','created_at','like_count','compost','media']
         read_only_fields=['id','user','created_at']
 
 #comments seriallizer
