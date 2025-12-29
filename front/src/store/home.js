@@ -36,7 +36,7 @@ export const Posthome = createApi({
         const postdata=dispatch(
           Posthome.util.updateQueryData(
           "getitem" //query name
-          ,undefined //for args we pass 
+          ,undefined //for args we pass  in getitem if any
           ,(draft)=>{
             if (!draft) return
           draft.unshift({

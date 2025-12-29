@@ -1,4 +1,5 @@
 import { useGetitemQuery } from "../store/home"
+import Likecreate from "./like/likecreate"
 
 
 function Postlist(){
@@ -15,6 +16,7 @@ function Postlist(){
         data.map((item)=>(
             <div key={item.id}>
            <h1>{item.title}</h1>
+           <Likecreate id={item.id}/>
             </div>
         ))}
 
