@@ -16,14 +16,46 @@ export const Posthome = createApi({
       return headers
     }
   }),
+  tagTypes:["list"],
   endpoints: (builder) => ({
     getitem: builder.query({
       query: () => ({
         url: 'u/pl/',
         method: "GET"
-      })
+      }),
+      providesTags:["list"]
+    }),
+    postcreate:builder.mutation({
+      query:(data)=>({
+        url:'u/plist/',
+        method:"POST",
+        body:data
+      }),
+      invalidatesTags:["list"],
+      async onQueryStarted(data,{dispatch,queryFulfilled}){
+        const postdata=dispatch(
+          Posthome.util.updateQueryData(
+          "getitem" //query name
+          ,undefined //for args we pass 
+          ,(draft)=>{
+            if (!draft) return
+          draft.unshift({
+           
+            ...data,
+            id:Date.now(),
+            _optimistic:true // optional flag
+          })
+         })
+        )
+
+        try {
+            await queryFulfilled
+        } catch (error) {
+          postdata.undo()
+        }
+      }
     })
   })
 })
 
-export const { useGetitemQuery } = Posthome
+export const { useGetitemQuery,usePostcreateMutation } = Posthome
