@@ -90,3 +90,6 @@ GET http://127.0.0.1:8000/u/pl/
 ###
 GET http://127.0.0.1:8000/u/t/
 
+###
+GET https://blog-production-14ae.up.railway.app/u/pl/
+

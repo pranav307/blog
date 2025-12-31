@@ -271,7 +271,7 @@ class Articlelist(viewsets.ModelViewSet):
 
     def get_cache_key(self,request):
         user_id =request.user.id if request.user.is_authenticated else None
-        page=request.query_paramas.get("page",1)
+        page=request.query_params.get("page",1)
         return f"user_{user_id}_page{page}"
     
     def list(self, request, *args, **kwargs):
