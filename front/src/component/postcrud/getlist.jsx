@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useArticledeleteMutation, useGetuserpostlistQuery } from "../../store/article"
+import Commentpost from "../comment/commentpost"
 
 
 function Userarticlelist(){
@@ -28,6 +29,7 @@ const handledelete=async(id)=>{
             data.map((item)=>(
                 <div key={item.id}>
                <h1>{item.title}</h1>
+               <Commentpost id={item.id}/>
                <button onClick={()=>navigate(`/up/${item.id}`)}>Edit</button>
                <button onClick={()=>handledelete(item.id)}>Delete</button>
                 </div>

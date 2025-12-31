@@ -18,29 +18,29 @@ export const Commentapi =createApi({
 
     endpoints:(builder)=>({
         getcomment:builder.query({
-          query:(id)=>({
-            url:`u/cm/?post_id=${id}`,
+          query:({id,parent_id})=>({
+            url:`u/cm/?post_id=${id}${parent_id ?`&parent=${parent_id}`:""}`,
             method:"GET",
             
           }),
-         providesTags:(r,e,id)=>[
-            {type:"comment",id}
+         providesTags:(r,e,args)=>[
+            {type:"comment",id:args.id,par:args?.parent_id}
          ]
         }),
         commentpost:builder.mutation({
-            query:({id,data})=>({
-                url:`u/cm/?post_id=${id}`,
+            query:({id,parent_id,data})=>({
+                url:`u/cm/?post_id=${id}${parent_id ? `&parent=${parent_id}` :""}`,
                 method:"POST",
                 body:data
             }),
-             providesTags:(r,e,id)=>[
-            {type:"comment",id}
+             providesTags:(r,e,args)=>[
+            {type:"comment",id:args.id,par:args?.parent_id}
          ],
-            async onQueryStarted({id,data},{dispatch,queryFulfilled}){
+            async onQueryStarted({args,data},{dispatch,queryFulfilled}){
                 const postres =dispatch(
                     Commentapi.util.updateQueryData(
                         "getcomment",
-                        id,
+                        args,
                         (draft)=>{
                             if (!draft) return
                             draft.unshift({
