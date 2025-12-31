@@ -281,7 +281,7 @@ class Articlelist(viewsets.ModelViewSet):
        if data:
            return Response(data)
        
-       response =super.list(request,*args,**kwargs)
+       response =super().list(request,*args,**kwargs)
 
        cache.set(cache_key,response.data,timeout=300)
        return response
