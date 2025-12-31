@@ -10,7 +10,9 @@ from django.utils.http import urlsafe_base64_decode
 from .models import Customuser,Profile,Postarticle,LikePost,Comment,Mediahandle
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from django.contrib.auth.tokens import default_token_generator
-
+from django.views.decorators.vary import vary_on_headers
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
 # from .tasks import send_verification_email
 from rest_framework import viewsets
@@ -18,6 +20,8 @@ from django.db.models import Q
 from rest_framework.decorators import action
 from bl.utils.storage import upload_file_to_supabase
 from django.http import HttpResponse
+from django.core.cache import cache
+from django.redis import get_redis_connection
 User = get_user_model()
 
 def home(request):
@@ -94,6 +98,11 @@ class ProfileView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 
+def clear_cache_key():
+    redis =get_redis_connection("default")
+    keys =redis.get("user_*_page*")
+    if keys:
+        redis.delete(*keys)
 class Postgpd(APIView):
     #   def get_serializer_class
     def get_permissions(self):
@@ -121,6 +130,7 @@ class Postgpd(APIView):
             serializer=Postseriallizer(data,data=request.data,partial=True)
             if serializer.is_valid():
                 serializer.save()
+                clear_cache_key()
                 return Response(serializer.data,status=status.HTTP_200_OK)
         except Postarticle.DoesNotExist:
             return Response({"errors":"post does found"},status=status.HTTP_400_BAD_REQUEST)
@@ -130,6 +140,7 @@ class Postgpd(APIView):
             data=self.get_object(pk=pk)
             self.check_object_permissions(request,data)
             data.delete()
+            clear_cache_key()
             return Response({"message":f"this item is deleted successsfully"},status=status.HTTP_204_NO_CONTENT)
         except:
             return Response({"error":f"this item getting error in deleting"},status=status.HTTP_400_BAD_REQUEST)
@@ -153,6 +164,7 @@ class Articlehai(APIView):
         serializer=Postseriallizer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
+            clear_cache_key()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
@@ -249,12 +261,31 @@ class Commentview(viewsets.ModelViewSet):
 
 ###
 #post list view
+@method_decorator(vary_on_headers("Authorization"),name="list")
+@method_decorator(cache_page(60*5),name="list")
 class Articlelist(viewsets.ModelViewSet):
 
     queryset=Postarticle.objects.all()
     serializer_class=Postseriallizer
     permission_classes=[Commentpermission]
 
+    def get_cache_key(self,request):
+        user_id =request.user.id if request.user.is_authenticated else None
+        page=request.query.paramas.get("page",1)
+        return f"user_{user_id}_page{page}"
+    
+    def list(self, request, *args, **kwargs):
+       cache_key=self.get_cache_key(request)
+
+       data=cache.get(cache_key)
+       if data:
+           return Response(data)
+       
+       response =super.list(request,*args,**kwargs)
+
+       cache.set(cache_key,response.data,timeout=300)
+       return response
+    
 ###
 #image and video handling
 MAX_VIDEO_SIZE = 50 * 1024 * 1024
