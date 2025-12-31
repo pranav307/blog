@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     # "django_celery_results",
+    "django_redis",
     "user.apps.UserConfig"
 ]
 

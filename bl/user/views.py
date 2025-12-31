@@ -21,7 +21,7 @@ from rest_framework.decorators import action
 from bl.utils.storage import upload_file_to_supabase
 from django.http import HttpResponse
 from django.core.cache import cache
-from django.redis import get_redis_connection
+from django_redis import get_redis_connection
 User = get_user_model()
 
 def home(request):
