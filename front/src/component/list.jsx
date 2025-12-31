@@ -1,4 +1,7 @@
 import { useGetitemQuery } from "../store/home"
+import Commentpost from "./comment/commentpost"
+import Postcomment from "./comment/postcomment"
+import CommentItem from "./comment/recusivenested"
 import Likecreate from "./like/likecreate"
 
 
@@ -17,6 +20,9 @@ function Postlist(){
             <div key={item.id}>
            <h1>{item.title}</h1>
            <Likecreate id={item.id}/>
+           <Commentpost id={item.id}/>
+           <Postcomment id={item.id}/>
+
             </div>
         ))}
 
