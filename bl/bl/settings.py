@@ -152,10 +152,11 @@ SIMPLE_JWT = {
 # EMAIL_HOST_PASSWORD =os.getenv("SMTP_KEY")
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL ="psgusain307@gmail.com"
+redis_url =os.getenv("REDIS_URL")
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',  # Use the appropriate Redis server URL
+        'LOCATION':redis_url,  # Use the appropriate Redis server URL
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
