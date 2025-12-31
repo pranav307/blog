@@ -21,7 +21,7 @@ gunicorn==23.0.0
 pillow==11.3.0
 
 # --- Redis / Celery (ONLY if you actually use them) ---
-django-redis==6.0.0
+django-redis==5.2.3
 django_celery_results==2.6.0
 
 # --- Debug / Profiling (optional, prod me usually off) ---
