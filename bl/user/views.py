@@ -249,9 +249,9 @@ class Commentview(viewsets.ModelViewSet):
 
         queryset = self.queryset.filter(post_id=post_id)
         if not parent_id:
-           queryset.filter(parent__isnull=True)
+           queryset=queryset.filter(parent__isnull=True)
         else:
-            queryset.filter(parent_id=parent_id)
+           queryset=queryset.filter(parent_id=parent_id)
         serializer=self.get_serializer(queryset,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
