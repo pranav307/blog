@@ -1,35 +1,53 @@
+import { useEffect, useRef, useState } from "react"
+import { useGetcommentQuery } from "../../store/comment"
+import CommentItem from "./recusivenested"
 
-import { useGetcommentQuery } from "../../store/comment";
-import CommentItem from "./recusivenested";
+function Commentpost({ id }) {
+  const [page, setPage] = useState(1)
+  const loaderRef = useRef(null)
 
-function Commentpost({id,parent_id=null}){
-    
-   const {data,error,isLoading} =useGetcommentQuery({id,parent_id}) 
+  const { data, isFetching } = useGetcommentQuery({ id, page })
 
-    // const handlenest=(id,parent_id) =>{
-        
-    //    try {
-    //      const {data:d,error:err} =useGetcommentQuery(id,parent_id) cannot call hook inside function
-    //      console.log("rrr",d)
-    //      return d,err
-    //    } catch (e) {
-    //       console.log(e,"check karlo sahi hai")
-    //    }
-    // }  
-     if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>{error?.data?.message}</p>;
-   return (
+  const comments = data?.results ?? []
+  const hasNextPage = Boolean(data?.next)
+
+  // IntersectionObserver logic
+  useEffect(() => {
+    if (!loaderRef.current || !hasNextPage) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0]
+        if (first.isIntersecting && !isFetching) {
+          setPage((p) => p + 1)
+        }
+      },
+      {
+        root: null,       // viewport
+        rootMargin: "200px",
+        threshold: 0,
+      }
+    )
+
+    observer.observe(loaderRef.current)
+
+    return () => observer.disconnect()
+  }, [hasNextPage, isFetching])
+
+  return (
     <div>
-     {data.map((item)=>(
-        <div key={item.id}>
-           <CommentItem key={item.id} comment={item} />
-          
-        </div>
-     ))}
+      {comments.map((comment) => (
+        <CommentItem key={comment.id} comment={comment} />
+      ))}
 
-    {error && <p>{error?.data?.message}</p> }
+      {/*  Observer target */}
+      {hasNextPage && (
+        <div ref={loaderRef} style={{ height: "40px" }}>
+          {isFetching && <p>Loading more comments...</p>}
+        </div>
+      )}
     </div>
-   )
+  )
 }
 
-export default Commentpost
+export default Commentpost  
