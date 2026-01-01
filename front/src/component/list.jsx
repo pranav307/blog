@@ -1,13 +1,13 @@
 import { useGetitemQuery } from "../store/home"
 import Commentpost from "./comment/commentpost"
 import Postcomment from "./comment/postcomment"
-import CommentItem from "./comment/recusivenested"
+
 import Likecreate from "./like/likecreate"
 
 
 function Postlist(){
   const {data,error,isLoading} =useGetitemQuery()
-
+  const user =JSON.parse(localStorage.getItem("user"))
   if(isLoading){
     return <p>...isloading</p>
   }

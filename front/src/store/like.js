@@ -26,7 +26,7 @@ export const  Likepostapi =createApi({
   { type: "like", id }   // like:10
 ]
         }),
-        postlikes:builder.query({
+        postlikes:builder.mutation({
             query:(id)=>({
                 url:`u/${id}/li/`,
                 method:"POST",
@@ -68,4 +68,4 @@ export const  Likepostapi =createApi({
     })
 })
 
-export const {useGetlikeQuery,usePostlikesQuery}=Likepostapi
+export const {useGetlikeQuery,usePostlikesMutation}=Likepostapi

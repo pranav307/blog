@@ -28,6 +28,7 @@ const handledelete=async(id)=>{
                <h1>{data.title}</h1>
                <h1>{data.description}</h1>
               <Commentpost id={data.id}/>
+              <button onClick={()=>navigate(`/img/${data.id}`)}> Upload media</button>
                <button onClick={()=>navigate(`/up/${data.id}`)}>Update</button>
                <button onClick={()=>handledelete(data.id)}>Delete</button>
                 </div>}
