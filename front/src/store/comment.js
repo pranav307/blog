@@ -19,7 +19,7 @@ export const Commentapi =createApi({
     endpoints:(builder)=>({
         getcomment:builder.query({
           query:({id,parent_id,page=1})=>({
-            url:`u/cm/?post_id=${id}${parent_id ?`&parent=${parent_id}`:""}$page=${page}`,
+            url:`u/cm/?post_id=${id}${parent_id ?`&parent=${parent_id}`:""}&page=${page}`,
             method:"GET",
             
           }),  
