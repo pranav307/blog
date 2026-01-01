@@ -1,7 +1,7 @@
 
 
 ###
-POST http://127.0.0.1:8000/u/re/
+POST https://blog-production-14ae.up.railway.app/u/re/
 Content-Type: application/json
 
 {
@@ -11,11 +11,11 @@ Content-Type: application/json
 }
 
 ###
-POST http://127.0.0.1:8000/u/to/
+POST https://blog-production-14ae.up.railway.app/u/to/
 Content-Type: application/json
 
 {
-   "email": "te@g.com",
+   "email": "t@g.com",
   "password": "Strongp123"
 }
 
@@ -92,4 +92,10 @@ GET http://127.0.0.1:8000/u/t/
 
 ###
 GET https://blog-production-14ae.up.railway.app/u/pl/
+
+###
+
+GET https://blog-production-14ae.up.railway.app/u/cm/?post_id=1&page=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3Njk0Mzc5LCJpYXQiOjE3NjcyNjIzNzksImp0aSI6ImQ1NjQzMjc5MDFjMTQxNjJhMzg5NmVkOTJjNjY5MDM0IiwidXNlcl9pZCI6IjIifQ.oJDuVS6nWl1anTmMSIUBw4Gsqb2bSCVqhChMMheJbu0
+
 

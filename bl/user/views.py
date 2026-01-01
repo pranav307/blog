@@ -200,7 +200,7 @@ class LikePostview(viewsets.ModelViewSet):
         },status=status.HTTP_201_CREATED)
    
 class Commentpagination(PageNumberPagination):
-    page_size=10
+    page_size=2
     page_query_param="page_size" 
     max_page_size=30
     def get_paginated_response(self, data):
@@ -264,7 +264,7 @@ class Commentview(viewsets.ModelViewSet):
            queryset=queryset.filter(parent__isnull=True)
         else:
            queryset=queryset.filter(parent_id=parent_id)
-           
+
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
