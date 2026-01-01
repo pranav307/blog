@@ -16,7 +16,7 @@ from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
 # from .tasks import send_verification_email
 from rest_framework import viewsets
-from django.db.models import Q
+from django.db.models import Q,Count
 from rest_framework.decorators import action
 from bl.utils.storage import upload_file_to_supabase
 from django.http import HttpResponse
@@ -264,6 +264,10 @@ class Commentview(viewsets.ModelViewSet):
            queryset=queryset.filter(parent__isnull=True)
         else:
            queryset=queryset.filter(parent_id=parent_id)
+
+        queryset = queryset.annotate(
+        replies_count=Count("replies")
+        )
 
         page = self.paginate_queryset(queryset)
         if page is not None:

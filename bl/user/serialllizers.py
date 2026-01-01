@@ -99,7 +99,7 @@ class Recursivecommentserializer(serializers.Serializer):
         serializer =Commentserializer(instance,context=self.context)
         return serializer.data
 class Commentserializer(serializers.ModelSerializer):
-    replies_count = serializers.IntegerField(source="replies.count", read_only=True)
+    replies_count = serializers.IntegerField(read_only=True)
     replies=Recursivecommentserializer(many=True,read_only=True)
     user=serializers.StringRelatedField()
 
