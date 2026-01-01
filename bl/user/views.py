@@ -22,6 +22,7 @@ from bl.utils.storage import upload_file_to_supabase
 from django.http import HttpResponse
 from django.core.cache import cache
 from django_redis import get_redis_connection
+from rest_framework.pagination import PageNumberPagination
 User = get_user_model()
 
 def home(request):
@@ -198,10 +199,21 @@ class LikePostview(viewsets.ModelViewSet):
 
         },status=status.HTTP_201_CREATED)
    
-   
+class Commentpagination(PageNumberPagination):
+    page_size=10
+    page_query_param="page_size" 
+    max_page_size=30
+    def get_paginated_response(self, data):
+        return Response({
+            "count": self.page.paginator.count,
+            "next": self.get_next_link(),
+            "previous": self.get_previous_link(),
+            "results": data,
+        })
 class Commentview(viewsets.ModelViewSet):
     queryset=Comment.objects.all()
     serializer_class=Commentserializer
+    pagination_class=Commentpagination
     # permission_classes=[IsAuthenticated,Commentpermission]
     
     def get_permissions(self):
@@ -252,6 +264,11 @@ class Commentview(viewsets.ModelViewSet):
            queryset=queryset.filter(parent__isnull=True)
         else:
            queryset=queryset.filter(parent_id=parent_id)
+           
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
         serializer=self.get_serializer(queryset,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
