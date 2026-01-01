@@ -10,7 +10,7 @@ export const Commentapi =createApi({
             if(token){
                 headers.set("Authorization",`Bearer ${token}`)
             }
-            headers.set("Content-Type","application-json")
+            headers.set("Content-Type", "application/json")
             return headers
         }
     }),
@@ -23,24 +23,26 @@ export const Commentapi =createApi({
             method:"GET",
             
           }),
-         providesTags:(r,e,args)=>[
-            {type:"comment",id:args.id,par:args?.parent_id}
-         ]
+         providesTags:(r,e,args)=>
+            args ? 
+            [{type:"comment",id:args.id,par:args?.parent_id}] :[]
+         
         }),
         commentpost:builder.mutation({
             query:({id,parent_id,data})=>({
-                url:`u/cm/?post_id=${id}${parent_id ? `&parent=${parent_id}` :""}`,
+                url:`u/cm/ccom/?post_id=${id}${parent_id ? `&parent=${parent_id}` :""}`,
                 method:"POST",
                 body:data
             }),
-             providesTags:(r,e,args)=>[
-            {type:"comment",id:args.id,par:args?.parent_id}
-         ],
-            async onQueryStarted({args,data},{dispatch,queryFulfilled}){
+            invalidatesTags:(r,e,args)=> 
+                args ? 
+                [{type:"comment",id:args?.id,par:args?.parent_id}] : [],
+            async onQueryStarted(args,{dispatch,queryFulfilled}){
+                const {id,parent_id,data} =args
                 const postres =dispatch(
                     Commentapi.util.updateQueryData(
                         "getcomment",
-                        args,
+                        {id,parent_id},
                         (draft)=>{
                             if (!draft) return
                             draft.unshift({

@@ -1,6 +1,4 @@
-import { useState } from 'react'
 
-import './App.css'
 import Login from './component/login'
 import Signup from './component/signup'
 import Postlist from './component/list'
@@ -13,13 +11,13 @@ import Userarticlelist from './component/postcrud/getlist'
 import Userarticlebyid from './component/postcrud/getpostid'
 import Protectedroute from './component/protect'
 import Imagevideo from './component/imagehandle/imagev'
-
+import './index.css'
 function App() {
 
 
   return (
     <>
-    <h1>home page</h1>
+    
     <Home></Home>
     <Routes>
 

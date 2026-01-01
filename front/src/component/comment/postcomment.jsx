@@ -1,30 +1,48 @@
-import { useState } from "react";
-import { useCommentpostMutation } from "../../store/comment";
+import { useState } from "react"
+import { useCommentpostMutation } from "../../store/comment"
 
+function Postcomment({ id, parent_id = null }) {
+  const token = localStorage.getItem("access")
+  const [content, setContent] = useState("")
+  const [postdata, { error, isLoading }] = useCommentpostMutation()
 
-function Postcomment({id,parent_d=null}){
-    const [content,setcontent] =useState("")
-    const [postdata,error,isLoading] =useCommentpostMutation()
-  const handleSubmit =async()=>{
+  const handleSubmit = async () => {
+    if (!token) {
+      alert("login first")
+      return
+    }
+
     try {
-         const res =await postdata({
-            id:id,
-            parent_d:parent_d,
-            data:content
-         })
+      const res = await postdata({
+        id,
+        parent_id,
+        data: {
+          content: content
+        }
+      }).unwrap()
 
-         console.log("kk",res.data)
+      console.log("comment created", res)
+      setContent("")
     } catch (err) {
-        console.log("error",err)
+      console.error("error", err)
     }
   }
-    return (
-        <div>
-            <label>write comment</label>
-            <input type="text" name={content} value={content} onChange={(e)=>setcontent(e.target.value)}></input>
-        <button onClick={handleSubmit}>Submit</button>
-        </div>
-    )
+
+  return (
+    <div>
+      <label>write comment</label>
+      <input
+        type="text"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
+      <button onClick={handleSubmit} disabled={isLoading}>
+        Submit
+      </button>
+
+      {error && <p>Something went wrong</p>}
+    </div>
+  )
 }
 
 export default Postcomment

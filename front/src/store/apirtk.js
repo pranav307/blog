@@ -14,7 +14,7 @@ export const apipost=createApi({
            if(token){
             headers.set('Authorization',`Bearer ${token}`)
            }
-           headers.set('content-type','application/json')
+           headers.set('Content-Type','application/json')
            return headers
         }
     }),
