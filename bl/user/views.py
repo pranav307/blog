@@ -381,4 +381,12 @@ class ImageHandling(APIView):
     # def get(self,request,post_id=None):
 
 
-    
+class CommentDeleteByPost(APIView):
+    def delete(self, request):
+        post_id = request.query_params.get("post_id")
+
+        if not post_id:
+            return Response({"error": "post_id required"}, status=400)
+
+        Comment.objects.filter(post_id=post_id).delete()
+        return Response(status=204)  
