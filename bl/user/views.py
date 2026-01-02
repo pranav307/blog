@@ -293,6 +293,10 @@ class Commentview(viewsets.ModelViewSet):
 
     # self.request = request
     # return list(self.page)
+    def destroy(self, request, *args, **kwargs):
+        post_id = request.query_params.get("post_id")
+        Comment.objects.filter(post_id=post_id).delete()
+        return Response(status=204)
 
 ###
 #post list view
