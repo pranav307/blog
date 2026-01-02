@@ -12,7 +12,9 @@ function Home(){
         navigate("/lo")
     }
     return <>
-     <div className="flex flex-row justify-evenly">
+     <div className="flex flex-row justify-evenly bg-gradient-to-tl from-pink-300 via-red-300 to-purple-300 *:
+     items-center h-32 text-lg font-serif
+     ">
     <Link to="">Posts</Link>
      {token ? (<button onClick={logout}>Logout</button>):(<Link to="/lo">Login</Link>)}
     <Link to="/cre">Create Post</Link>

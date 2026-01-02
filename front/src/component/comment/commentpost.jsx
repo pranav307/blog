@@ -38,7 +38,7 @@ function Commentpost({ id,parent_id}) {
   }, [hasNextPage])
  
   return (
-    <div>
+    <div className="flex flex-col">
       {comments.map((comment) => (
         <CommentItem key={comment.id} comment={comment} />
       ))}

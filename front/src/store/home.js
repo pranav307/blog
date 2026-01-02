@@ -25,6 +25,7 @@ export const Posthome = createApi({
       }),
       providesTags:["list"]
     }),
+    // d
     postcreate:builder.mutation({
       query:(data)=>({
         url:'u/plist/',
@@ -54,8 +55,13 @@ export const Posthome = createApi({
           postdata.undo()
         }
       }
+    }),
+    // f
+    getbyid:builder.query({
+      query:(id)=>`u/pl/${id}/`
+      
     })
   })
 })
 
-export const { useGetitemQuery,usePostcreateMutation } = Posthome
+export const { useGetitemQuery,usePostcreateMutation,useGetbyidQuery } = Posthome

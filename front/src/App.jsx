@@ -12,37 +12,38 @@ import Userarticlebyid from './component/postcrud/getpostid'
 import Protectedroute from './component/protect'
 import Imagevideo from './component/imagehandle/imagev'
 import './index.css'
+import Articlebyid from './component/getartbyid'
 function App() {
 
 
   return (
     <>
     
-    <Home></Home>
+    
     <Routes>
+  <Route element={<Home/>}>
+  <Route path="/lo" element={<Login />} />
 
-      <Route path="/lo" element={<Login/>}></Route>
-      {/* post list for everyone */}
-      <Route path="" element={<Postlist/>} index></Route>
-      <Route path="/sign" element={<Signup/>}></Route>
-      <Route element={<Protectedroute/>}>
-      {/* user article list */}
-      <Route path='/gl' element={<Userarticlelist/>}></Route>
-      <Route path='/article/:id' element={<Userarticlebyid/>}></Route>
-      {/* create post article */}
-      <Route path='/cre' element={<Postcreate/>}></Route> 
-      {/* update post article */}
-      <Route path="/up/:id" element={<Postcreate/>}></Route>
-      {/* profile */}
-      <Route path="/pro" element={<Profileget/>}></Route>
-      <Route path="/pp" element={<Profile/>}></Route>
-      {/* image upload */}
-      <Route path="/img/:id" element={<Imagevideo/>}></Route>
-      </Route>
-     
-     
-     
-    </Routes>
+  {/* post list for everyone */}
+  <Route index element={<Postlist />} />
+
+  {/* details by id */}
+  <Route path="/a/:id" element={<Articlebyid />} />
+
+  <Route path="/sign" element={<Signup />} />
+
+  <Route element={<Protectedroute />}>
+    <Route path="/gl" element={<Userarticlelist />} />
+    <Route path="/article/:id" element={<Userarticlebyid />} />
+    <Route path="/cre" element={<Postcreate />} />
+    <Route path="/up/:id" element={<Postcreate />} />
+    <Route path="/pro" element={<Profileget />} />
+    <Route path="/pp" element={<Profile />} />
+    <Route path="/img/:id" element={<Imagevideo />} />
+  </Route>
+  </Route>
+</Routes>
+
      
      
     </>

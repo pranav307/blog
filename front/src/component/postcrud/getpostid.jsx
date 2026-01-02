@@ -34,7 +34,7 @@ const handledelete=async(id)=>{
                 </div>}
                 
            
-    
+            {data.length === 0 && <p>nothig found</p>}
             {error && <p>{error}</p>}
         </div>
       )
