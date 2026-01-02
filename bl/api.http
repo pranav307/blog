@@ -5,8 +5,8 @@ POST https://blog-production-14ae.up.railway.app/u/re/
 Content-Type: application/json
 
 {
-  "username": "q",
-  "email": "t@g.com",
+  "username": "qs",
+  "email": "s@g.com",
   "password": "Strongp123"
 }
 
@@ -15,7 +15,7 @@ POST https://blog-production-14ae.up.railway.app/u/to/
 Content-Type: application/json
 
 {
-   "email": "t@g.com",
+   "email": "s@g.com",
   "password": "Strongp123"
 }
 
@@ -24,7 +24,7 @@ Content-Type: application/json
 ###
 PATCH  http://127.0.0.1:8000/u/pro/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NjgzMDQ5LCJpYXQiOjE3NjYyNTEwNDksImp0aSI6IjcwZmQ0OWJmMWZkNjQyMjlhY2IwMzlmMmFkNzk3ZDdhIiwidXNlcl9pZCI6IjMifQ.GtIix0XRenDrlOzpd_Ky6ITGvXzdYKGN9qUDnd2x0mI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3Nzk4MzU1LCJpYXQiOjE3NjczNjYzNTUsImp0aSI6IjQ3ODZkN2Y0M2JlYzRjZTE4NDE4NWZkY2NhODI5YzllIiwidXNlcl9pZCI6IjQifQ.JKPZzt9WcW-HXVURofSVFK408vG3z1bJIJmqMZif3fk
 
 
 {
@@ -42,9 +42,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 
 ###
-POST http://127.0.0.1:8000/u/plist/
+POST https://blog-production-14ae.up.railway.app/u/plist/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2ODIzNTg1LCJpYXQiOjE3NjYzOTE1ODUsImp0aSI6ImJhMjg1Nzc3YTE2YjQzNzA5OTcyOTRkOTYyM2VlNWE0IiwidXNlcl9pZCI6IjQifQ.OrMh8Jf0A6o5J658l_qi11DoI2j8FmBqA3Ockef2q3g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3Nzk4MzU1LCJpYXQiOjE3NjczNjYzNTUsImp0aSI6IjQ3ODZkN2Y0M2JlYzRjZTE4NDE4NWZkY2NhODI5YzllIiwidXNlcl9pZCI6IjQifQ.JKPZzt9WcW-HXVURofSVFK408vG3z1bJIJmqMZif3fk
 
 {
   
@@ -110,5 +110,5 @@ Content-Type: application/json
 }
 
 ###
-DELETE https://blog-production-14ae.up.railway.app/u/c/delete/?post_id=1
+DELETE https://blog-production-14ae.up.railway.app/u/c/delete/?post_id=3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3Njk0Mzc5LCJpYXQiOjE3NjcyNjIzNzksImp0aSI6ImQ1NjQzMjc5MDFjMTQxNjJhMzg5NmVkOTJjNjY5MDM0IiwidXNlcl9pZCI6IjIifQ.oJDuVS6nWl1anTmMSIUBw4Gsqb2bSCVqhChMMheJbu0
