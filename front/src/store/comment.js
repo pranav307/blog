@@ -16,10 +16,9 @@ export const Commentapi = createApi({
     },
   }),
 
-  tagTypes: ["comment"],
-
   endpoints: (builder) => ({
-    
+
+    // ================= GET COMMENTS =================
     getcomment: builder.query({
       query: ({ id, parent_id = null, page = 1 }) => ({
         url: `u/cm/?post_id=${id}${
@@ -28,7 +27,7 @@ export const Commentapi = createApi({
         method: "GET",
       }),
 
-      //  cache key = post + parent (page ignored)
+      //  ONE cache per post + parent (page ignored)
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         const { id, parent_id } = queryArgs
         return `${endpointName}-${id}-${parent_id ?? "root"}`
@@ -37,67 +36,67 @@ export const Commentapi = createApi({
       //  infinite scroll merge
       merge: (currentCache, newData) => {
         if (!currentCache) return newData
-
         currentCache.results.push(...newData.results)
         currentCache.next = newData.next
         currentCache.count = newData.count
       },
 
-      //  refetch only when page changes
+      // page change pe hi refetch
       forceRefetch({ currentArg, previousArg }) {
         return currentArg?.page !== previousArg?.page
       },
-
-      providesTags: (result, error, args) => [
-        { type: "comment", id: `${args.id}-${args.parent_id ?? "root"}` },
-      ],
     }),
+commentpost: builder.mutation({
+  query: ({ id, parent_id = null, data }) => ({
+    url: `u/cm/ccom/?post_id=${id}${
+      parent_id ? `&parent=${parent_id}` : ""
+    }`,
+    method: "POST",
+    body: data,
+  }),
 
-    commentpost: builder.mutation({
-      query: ({ id, parent_id = null, data }) => ({
-        url: `u/cm/ccom/?post_id=${id}${
-          parent_id ? `&parent=${parent_id}` : ""
-        }`,
-        method: "POST",
-        body: data,
-      }),
+  async onQueryStarted(args, { dispatch, queryFulfilled }) {
+    const { id, parent_id } = args
 
-      invalidatesTags: (r, e, args) => [
-        { type: "comment", id: `${args.id}-${args.parent_id ?? "root"}` },
-      ],
+    try {
+      const { data: newComment } = await queryFulfilled
 
-      // optimistic update
-      async onQueryStarted(args, { dispatch, queryFulfilled }) {
-        const { id, parent_id, data } = args
+      // 1 update replies list (nested)
+      dispatch(
+        Commentapi.util.updateQueryData(
+          "getcomment",
+          { id, parent_id, page: 1 },
+          (draft) => {
+            if (!draft?.results) return
+            draft.results.unshift(newComment)
+            draft.count += 1
+          }
+        )
+      )
 
-        const patchResult = dispatch(
+      //  update parent replies_count (only if nested)
+      if (parent_id) {
+        dispatch(
           Commentapi.util.updateQueryData(
             "getcomment",
-            { id, parent_id },
+            { id, parent_id: null, page: 1 },
             (draft) => {
-              if (!draft?.results) return
-
-              draft.results.unshift({
-                id: Date.now(), // temp id
-                content: data.content,
-                post: id,
-                replies: [],
-                replies_count: 0,
-                _optimistic: true,
-              })
-
-              draft.count += 1
+              const parent = draft.results.find(
+                (c) => c.id === parent_id
+              )
+              if (parent) {
+                parent.replies_count += 1
+              }
             }
           )
         )
+      }
+    } catch (err) {
+      console.error("reply failed", err)
+    }
+  },
+}),
 
-        try {
-          await queryFulfilled
-        } catch {
-          patchResult.undo()
-        }
-      },
-    }),
   }),
 })
 

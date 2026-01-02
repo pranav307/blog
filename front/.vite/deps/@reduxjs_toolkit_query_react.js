@@ -8,9 +8,6 @@ import {
   useStore
 } from "./chunk-SYZXLGOE.js";
 import {
-  require_react
-} from "./chunk-HWMK2RSU.js";
-import {
   SHOULD_AUTOBATCH,
   applyPatches,
   combineReducers,
@@ -39,6 +36,9 @@ import {
   produceWithPatches,
   weakMapMemoize
 } from "./chunk-2XTUOQ5E.js";
+import {
+  require_react
+} from "./chunk-HWMK2RSU.js";
 import {
   __toESM
 } from "./chunk-5WRI5ZAA.js";
