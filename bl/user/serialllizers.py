@@ -105,7 +105,7 @@ class Commentserializer(serializers.ModelSerializer):
 
     class Meta:
         model=Comment
-        fields=['id','user','content','post','replies','created_at','replies_count']
+        fields=['id','user','content','parent','post','replies','created_at','replies_count']
 
 #like seriallizer
 class Likeseriallizer(serializers.ModelSerializer):
