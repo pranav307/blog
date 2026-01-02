@@ -42,7 +42,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 
 ###
-POST https://blog-production-14ae.up.railway.app/u/plist/
+# POST https://blog-production-14ae.up.railway.app/u/plist/
+POST http://127.0.0.1:8000/u/plist/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3Nzk4MzU1LCJpYXQiOjE3NjczNjYzNTUsImp0aSI6IjQ3ODZkN2Y0M2JlYzRjZTE4NDE4NWZkY2NhODI5YzllIiwidXNlcl9pZCI6IjQifQ.JKPZzt9WcW-HXVURofSVFK408vG3z1bJIJmqMZif3fk
 
@@ -51,7 +52,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
   "image1": "https://example.com/images/post1_main.jpg",
   "image2": "https://example.com/images/post1_secondary.jpg",
   "video": "https://example.com/videos/post1.mp4",
-  "title": "Django ",
+  "title": "jklm ",
   
   "description": "This post explains how to implement a like and unlike toggle system using Django REST Framework and ViewSets.",
   "link1": "https://docs.djangoproject.com/en/5.0/",

@@ -122,6 +122,10 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
       
     ),
+    'DEFAULT_THROTTLE_RATES':{
+        'burst':'3/min',
+        'sustained': '1000/day'
+    }
 } 
 
 

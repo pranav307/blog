@@ -23,12 +23,30 @@ from django.http import HttpResponse
 from django.core.cache import cache
 from django_redis import get_redis_connection
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.throttling import UserRateThrottle,SimpleRateThrottle
 User = get_user_model()
 
 def home(request):
     return HttpResponse("ho gaya")
 def dashboard(request):
     return HttpResponse(" <h1> Admin Dashboard </h1> ")
+
+class Burstscopethrottle(SimpleRateThrottle):
+    scope='burst'
+    # ident in throtaling
+    def get_cache_key(self, request, view):
+       if request.user.is_authenticated:
+           ident=request.user.id
+       else:
+           ident=self.get_ident(request)
+
+       return self.cache_format %{
+           'scope':self.scope,
+           'ident':ident
+       }
+
+class SustainedRateThrottle(UserRateThrottle):
+    scope = 'sustained'
 class RegisterUser(APIView):
     """
     API endpoint to register a new user.
@@ -101,7 +119,7 @@ class ProfileView(APIView):
 
 def clear_cache_key():
     redis =get_redis_connection("default")
-    keys =redis.get("user_*_page*")
+    keys =redis.keys("user_*_page*")
     if keys:
         redis.delete(*keys)
 class Postgpd(APIView):
@@ -151,6 +169,11 @@ class Postgpd(APIView):
         
 class Articlehai(APIView):
     permission_classes=[IsAuthenticated]
+
+    def get_throttles(self):
+        if self.request.method == "POST":
+            return [SustainedRateThrottle(),Burstscopethrottle()]
+        return []
     def get(self,request):
         try:
            data=Postarticle.objects.prefetch_related("compost").prefetch_related("likes").filter(user=request.user)
@@ -160,7 +183,7 @@ class Articlehai(APIView):
                  
         except Postarticle.DoesNotExist:
             return Response({"error":"article not found for you"},status=status.HTTP_400_BAD_REQUEST)
-        
+    
     def post(self,request):
         serializer=Postseriallizer(data=request.data)
         if serializer.is_valid():
@@ -210,6 +233,7 @@ class Commentpagination(PageNumberPagination):
     #         "previous": self.get_previous_link(),
     #         "results": data,
     #     })
+
 class Commentview(viewsets.ModelViewSet):
     queryset=Comment.objects.all()
     serializer_class=Commentserializer
@@ -227,7 +251,7 @@ class Commentview(viewsets.ModelViewSet):
             permission_classes=[IsAuthenticated,Commentpermission]
 
         return [permission() for permission in permission_classes]
-    @action(detail=False,methods=["POST"])
+    @action(detail=False,methods=["POST"],throttle_classes=[Burstscopethrottle,SustainedRateThrottle])
     # (?P<post_id>\d+)/toggle
     def ccom(self,request):
         # post_id=request.data["post_id"]
@@ -318,6 +342,7 @@ class Articlelist(viewsets.ModelViewSet):
 
        data=cache.get(cache_key)
        if data:
+           print("redis hai kya bhe")
            return Response(data)
        
        response =super().list(request,*args,**kwargs)
