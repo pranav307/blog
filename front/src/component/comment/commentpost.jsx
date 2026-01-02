@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react"
 import { useGetcommentQuery } from "../../store/comment"
 import CommentItem from "./recusivenested"
 
-function Commentpost({ id }) {
+function Commentpost({ id,parent_id}) {
   const [page, setPage] = useState(1)
 
   const loaderRef = useRef(null)
   const loadingRef = useRef(false)
 
-  const { data, isFetching } = useGetcommentQuery({ id, page })
+  const { data, isFetching } = useGetcommentQuery({ id, page,parent_id })
 
   const comments = data?.results ?? []
   const hasNextPage = Boolean(data?.next)
@@ -17,6 +17,9 @@ function Commentpost({ id }) {
     loadingRef.current = false
   }, [data])
 
+    useEffect(() => {
+    setPage(1)
+  }, [id, parent_id])
   useEffect(() => {
     if (!loaderRef.current || !hasNextPage) return
 
@@ -33,7 +36,7 @@ function Commentpost({ id }) {
     observer.observe(loaderRef.current)
     return () => observer.disconnect()
   }, [hasNextPage])
-
+ 
   return (
     <div>
       {comments.map((comment) => (

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useLoginapiMutation } from "../store/apirtk"
+import { Link } from "react-router-dom"
 
 function Login() {
   const [form, setForm] = useState({
@@ -25,7 +26,7 @@ function Login() {
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>if not register signup <Link to="/sign">SignUp</Link></h2>
 
       <form onSubmit={handleSubmit}>
         <input

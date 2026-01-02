@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Postcomment from "./postcomment"
-import Commentpost from "./commentpost" // replies list component
+import Commentpost from "./commentpost"
 
 function CommentItem({ comment }) {
   const [showReplyForm, setShowReplyForm] = useState(false)
@@ -12,6 +12,7 @@ function CommentItem({ comment }) {
         marginLeft: "20px",
         borderLeft: "1px solid #ddd",
         paddingLeft: "10px",
+        marginTop: "10px",
       }}
     >
       <p>{comment.content}</p>
@@ -20,23 +21,29 @@ function CommentItem({ comment }) {
       <br />
 
       {comment.replies_count > 0 && (
-        <button onClick={() => setShowReplies((p) => !p)}>
-          {showReplies ? "hide replies" : "show replies"}
+        <button onClick={() => setShowReplies((prev) => !prev)}>
+          {showReplies ? "Hide replies" : "Show replies"}
         </button>
       )}
 
-      <button onClick={() => setShowReplyForm((p) => !p)}>
-        write reply
+      <button onClick={() => setShowReplyForm((prev) => !prev)}>
+        Write reply
       </button>
 
-      {/* reply form */}
-      {showReplyForm && (
-        <Postcomment id={comment.post} parent_id={comment.id} />
+      {/* Reply form (sirf real comments ke liye) */}
+      {showReplyForm && !comment._optimistic && (
+        <Postcomment
+          id={comment.post}
+          parent_id={comment.id}
+        />
       )}
 
-      {/* replies fetched lazily */}
+      {/* Nested replies */}
       {showReplies && (
-        <Commentpost id={comment.post} parent_id={comment.id} />
+        <Commentpost
+          id={comment.post}
+          parent_id={comment.id}
+        />
       )}
     </div>
   )
