@@ -235,7 +235,7 @@ class Commentview(viewsets.ModelViewSet):
         content =request.data["content"]
         # parent=request.data["parent"] | None
         # parent_id=request.data["parent"]
-        parent_id=request.data.get("parent") #optional
+        parent_id=request.query_params.get("parent") #optional
         if not post_id or not content:
             return Response({"message":"post_id and content are required"},status=status.HTTP_400_BAD_REQUEST)
        
