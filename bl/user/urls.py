@@ -7,7 +7,7 @@ from .views import RegisterUser,EmailTokenObtainPairView,VerifyEmailView \
 ,ProfileView,LikePostview,Articlehai,Articlelist,Commentview,Postgpd,ImageHandling,dashboard,CommentDeleteByPost
 
 router=DefaultRouter()
-router.register("like",LikePostview,basename="likepost")
+router.register( r'like/(?P<post>\d+)/',LikePostview,basename="likepost")
 router.register("pl",Articlelist,basename="plist")
 router.register("cm",Commentview,basename="commentview")
 

@@ -200,6 +200,9 @@ class LikePostview(viewsets.ModelViewSet):
      
     # def perform_create(self, serializer):
     #     serializer.save(post=self.kwargs["post"],user=self.request.user)
+    def get_queryset(self):
+       post_id =self.kwargs.get("post")
+       return LikePost.objects.filter(post_id=post_id)
     def create(self, request, *args, **kwargs):
         post_id =self.kwargs["post"]
         user=request.user
