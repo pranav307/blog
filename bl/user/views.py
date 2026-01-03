@@ -204,8 +204,8 @@ class LikePostview(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         post_id = request.query_params.get("post")
         if not post_id:
-            return self.queryset.objects.none()
-        reponse=self.queryset.objects.filter(post_id=post_id)
+            return self.queryset.none()
+        reponse=self.queryset.filter(post_id=post_id)
         serializer=self.get_serializer(reponse,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
@@ -213,7 +213,7 @@ class LikePostview(viewsets.ModelViewSet):
         post_id = request.query_params.get("post")
         user = request.user
 
-        like = self.queryset.objects.filter(post_id=post_id, user=user)
+        like = self.queryset.filter(post_id=post_id, user=user)
 
         if like.exists():
             like.delete()
@@ -222,7 +222,7 @@ class LikePostview(viewsets.ModelViewSet):
                 status=status.HTTP_200_OK
             )
 
-        self.queryset.objects.create(post_id=post_id, user=user)
+        self.queryset.create(post_id=post_id, user=user)
         return Response(
             {"message": "like successfully"},
             status=status.HTTP_201_CREATED
