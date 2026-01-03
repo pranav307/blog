@@ -197,14 +197,19 @@ class LikePostview(viewsets.ModelViewSet):
     serializer_class = Likeseriallizer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        post_id = self.request.query_params.get("post")
+   
+        
+    
+    def list(self, request, *args, **kwargs):
+        post_id = request.query_params.get("post")
         if not post_id:
             return LikePost.objects.none()
-        return LikePost.objects.filter(post_id=post_id)
+        reponse=LikePost.objects.filter(post_id=post_id)
+        serializer=self.get_serializer(reponse,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
-        post_id = request.data.get("post")
+        post_id = request.kwargs.get("post")
         user = request.user
 
         like = LikePost.objects.filter(post_id=post_id, user=user)
