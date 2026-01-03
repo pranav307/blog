@@ -20,17 +20,17 @@ export const Likepostapi = createApi({
   endpoints: (builder) => ({
     // GET likes for a post
     getlike: builder.query({
-      query: (postId) => ({
-        url: `like/`, // this will hit the router endpoint
+      query: ({postId}) => ({
+        url: `u/like/${postId}/`, // this will hit the router endpoint
         method: "GET",
-        params: { post: postId }, // backend must filter likes by post
+        // backend must filter likes by post
       }),
       providesTags: (result, error, postId) => [{ type: "like", id: postId }],
     }),
     // POST like for a post
     postlikes: builder.mutation({
-      query: (postId) => ({
-        url: `${postId}/li/`, // matches your Django path("<int:post>/li/")
+      query: ({postId}) => ({
+        url: `u/${postId}/li/`, // matches your Django path("<int:post>/li/")
         method: "POST",
       }),
       invalidatesTags: (result, error, postId) => [{ type: "like", id: postId }],
