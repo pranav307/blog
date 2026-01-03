@@ -194,6 +194,7 @@ class Articlehai(APIView):
 
 #like picture
 class LikePostview(viewsets.ModelViewSet):
+    queryset=LikePost.objects.all()
     serializer_class = Likeseriallizer
     permission_classes = [IsAuthenticated]
 
@@ -203,16 +204,16 @@ class LikePostview(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         post_id = request.query_params.get("post")
         if not post_id:
-            return LikePost.objects.none()
-        reponse=LikePost.objects.filter(post_id=post_id)
+            return self.queryset.objects.none()
+        reponse=self.queryset.objects.filter(post_id=post_id)
         serializer=self.get_serializer(reponse,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
-        post_id = request.kwargs.get("post")
+        post_id = request.query_params.get("post")
         user = request.user
 
-        like = LikePost.objects.filter(post_id=post_id, user=user)
+        like = self.queryset.objects.filter(post_id=post_id, user=user)
 
         if like.exists():
             like.delete()
@@ -221,7 +222,7 @@ class LikePostview(viewsets.ModelViewSet):
                 status=status.HTTP_200_OK
             )
 
-        LikePost.objects.create(post_id=post_id, user=user)
+        self.queryset.objects.create(post_id=post_id, user=user)
         return Response(
             {"message": "like successfully"},
             status=status.HTTP_201_CREATED
