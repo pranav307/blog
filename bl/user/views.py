@@ -194,40 +194,34 @@ class Articlehai(APIView):
 
 #like picture
 class LikePostview(viewsets.ModelViewSet):
-    queryset=LikePost.objects.all()
-    serializer_class=Likeseriallizer
-    permission_classes=[IsAuthenticated]
-     
-    # def perform_create(self, serializer):
-    #     serializer.save(post=self.kwargs["post"],user=self.request.user)
-    def get_queryset(self):
-       post_id =self.kwargs.get("post")
-       
-    
-       if not post_id:
-          return LikePost.objects.none()
-       return LikePost.objects.filter(post_id=post_id)
-    def create(self, request, *args, **kwargs):
-        post_id =self.kwargs["post"]
-        user=request.user
+    serializer_class = Likeseriallizer
+    permission_classes = [IsAuthenticated]
 
-        like=LikePost.objects.filter(
-           Q(post_id=post_id) &
-            Q(user=user)
-        )
+    def get_queryset(self):
+        post_id = self.request.query_params.get("post")
+        if not post_id:
+            return LikePost.objects.none()
+        return LikePost.objects.filter(post_id=post_id)
+
+    def create(self, request, *args, **kwargs):
+        post_id = request.data.get("post")
+        user = request.user
+
+        like = LikePost.objects.filter(post_id=post_id, user=user)
 
         if like.exists():
             like.delete()
-            return Response({
-                "message":"dislike succussefully"
-            },status=status.HTTP_200_OK)
-        
-        LikePost.objects.create(post_id=post_id,user=user)
+            return Response(
+                {"message": "dislike successfully"},
+                status=status.HTTP_200_OK
+            )
 
-        return Response({
-            "message":"like successfully",
+        LikePost.objects.create(post_id=post_id, user=user)
+        return Response(
+            {"message": "like successfully"},
+            status=status.HTTP_201_CREATED
+        )
 
-        },status=status.HTTP_201_CREATED)
    
 class Commentpagination(PageNumberPagination):
     page_size=2
