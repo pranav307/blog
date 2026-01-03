@@ -113,3 +113,7 @@ Content-Type: application/json
 ###
 DELETE https://blog-production-14ae.up.railway.app/u/c/delete/?post_id=3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3Njk0Mzc5LCJpYXQiOjE3NjcyNjIzNzksImp0aSI6ImQ1NjQzMjc5MDFjMTQxNjJhMzg5NmVkOTJjNjY5MDM0IiwidXNlcl9pZCI6IjIifQ.oJDuVS6nWl1anTmMSIUBw4Gsqb2bSCVqhChMMheJbu0
+
+###
+POST https://blog-production-14ae.up.railway.app/u/11/li/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3Njk0Mzc5LCJpYXQiOjE3NjcyNjIzNzksImp0aSI6ImQ1NjQzMjc5MDFjMTQxNjJhMzg5NmVkOTJjNjY5MDM0IiwidXNlcl9pZCI6IjIifQ.oJDuVS6nWl1anTmMSIUBw4Gsqb2bSCVqhChMMheJbu0
