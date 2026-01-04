@@ -14,6 +14,7 @@ from django.views.decorators.vary import vary_on_headers
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 # from .tasks import send_verification_email
 from rest_framework import viewsets
 from django.db.models import Q,Count
@@ -122,48 +123,74 @@ def clear_cache_key():
     keys =redis.keys("user_*_page*")
     if keys:
         redis.delete(*keys)
+
+
 class Postgpd(APIView):
-    #   def get_serializer_class
+
     def get_permissions(self):
         if self.request.method in ["PATCH", "DELETE"]:
-          return [IsAuthenticated(),Postisowner()]
+            return [IsAuthenticated(), Postisowner()]
         return [IsAuthenticated()]
-    def get_object(self,pk):
+
+    def get_object(self, pk):
         return get_object_or_404(
-            Postarticle.objects.prefetch_related("compost").prefetch_related("likes"),
+            Postarticle.objects
+            .prefetch_related("compost", "likes"),
             pk=pk
         )
-    
-    def get(self,request,pk=None):
+
+    def get(self, request, pk=None):
         try:
-            data=self.get_object(pk=pk)
-            serializer=Postseriallizer(data)
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        except Postarticle.DoesNotExist:
-            return Response({"errors":"post does found"},status=status.HTTP_400_BAD_REQUEST)
-        
-    def patch(self,request,pk=None):
+            post = self.get_object(pk)
+            serializer = Postseriallizer(instance=post)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Http404:
+            return Response(
+                {"error": "Post not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+    def patch(self, request, pk=None):
         try:
-            data=self.get_object(pk=pk)
-            self.check_object_permissions(request,data)
-            serializer=Postseriallizer(data,data=request.data,partial=True)
+            post = self.get_object(pk)
+            self.check_object_permissions(request, post)
+
+            serializer = Postseriallizer(
+                instance=post,
+                data=request.data,
+                partial=True
+            )
+
             if serializer.is_valid():
                 serializer.save()
                 clear_cache_key()
-                return Response(serializer.data,status=status.HTTP_200_OK)
-        except Postarticle.DoesNotExist:
-            return Response({"errors":"post does found"},status=status.HTTP_400_BAD_REQUEST)
-        
-    def delete(self,request,pk=None):
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Http404:
+            return Response(
+                {"error": "Post not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+    def delete(self, request, pk=None):
         try:
-            data=self.get_object(pk=pk)
-            self.check_object_permissions(request,data)
-            data.delete()
+            post = self.get_object(pk)
+            self.check_object_permissions(request, post)
+            post.delete()
             clear_cache_key()
-            return Response({"message":f"this item is deleted successsfully"},status=status.HTTP_204_NO_CONTENT)
-        except:
-            return Response({"error":f"this item getting error in deleting"},status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                {"message": "Item deleted successfully"},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except Http404:
+            return Response(
+                {"error": "Post not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+    
+   
 
     
         
