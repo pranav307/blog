@@ -1,52 +1,52 @@
-import { useState } from "react"
-import Postcomment from "./postcomment"
-import Commentpost from "./commentpost"
+import { useState } from "react";
+import Postcomment from "./postcomment";
+import Commentpost from "./commentpost";
 
 function CommentItem({ comment }) {
-  const [showReplyForm, setShowReplyForm] = useState(false)
-  const [showReplies, setShowReplies] = useState(false)
+  const [showReplyForm, setShowReplyForm] = useState(false);
+  const [showReplies, setShowReplies] = useState(false);
 
   return (
-    <div
-      style={{
-        marginLeft: "20px",
-        borderLeft: "1px solid #ddd",
-        paddingLeft: "10px",
-        marginTop: "10px",
-      }}
-    >
-      <p>{comment.content}</p>
+    <div className="ml-5 mt-4 border-l border-gray-300 pl-4">
+      <p className="text-gray-800">{comment.content}</p>
 
-      <small>Replies: {comment.replies_count}</small>
-      <br />
+      <small className="text-gray-500 text-sm">
+        Replies: {comment.replies_count}
+      </small>
 
-      {comment.replies_count > 0 && (
-        <button onClick={() => setShowReplies((prev) => !prev)}>
-          {showReplies ? "Hide replies" : "Show replies"}
+      <div className="mt-2 flex flex-wrap gap-2">
+        {comment.replies_count > 0 && (
+          <button
+            onClick={() => setShowReplies((prev) => !prev)}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            {showReplies ? "Hide replies" : "Show replies"}
+          </button>
+        )}
+
+        <button
+          onClick={() => setShowReplyForm((prev) => !prev)}
+          className="text-sm text-green-600 hover:underline"
+        >
+          Write reply
         </button>
-      )}
+      </div>
 
-      <button onClick={() => setShowReplyForm((prev) => !prev)}>
-        Write reply
-      </button>
-
-      {/* Reply form (sirf real comments ke liye) */}
+      {/* Reply form (only for real comments) */}
       {showReplyForm && !comment._optimistic && (
-        <Postcomment
-          id={comment.post}
-          parent_id={comment.id}
-        />
+        <div className="mt-2">
+          <Postcomment id={comment.post} parent_id={comment.id} />
+        </div>
       )}
 
       {/* Nested replies */}
       {showReplies && (
-        <Commentpost
-          id={comment.post}
-          parent_id={comment.id}
-        />
+        <div className="mt-2">
+          <Commentpost id={comment.post} parent_id={comment.id} />
+        </div>
       )}
     </div>
-  )
+  );
 }
 
-export default CommentItem
+export default CommentItem;

@@ -12,12 +12,12 @@ function Profile() {
     website: ""
   })
 
-  // 🔥 fetch profile on mount
+  //  fetch profile on mount
   useEffect(() => {
     getProfile()
   }, [getProfile])
 
-  // 🔥 fill form when data arrives
+  //  fill form when data arrives
   useEffect(() => {
     if (data) {
       setProData({

@@ -3,11 +3,11 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 function Likecreate({id}) {
   const [postlike, { isLoading }] = usePostlikesMutation();
-  const { data: likes = [] } = useGetlikeQuery({postId:id});
+  const { data: likes} = useGetlikeQuery({postId:id});
   const users = JSON.parse(localStorage.getItem("user")) || null;
    console.log(likes,"dekh le")
   // check if current user already liked
-  const hasLiked = users ? likes.some(l => l.user === users.id) : false;
+const hasLiked = Boolean(likes?.liked);
 if (!users) return;
   const handlelike = async () => {
     if (!users) {

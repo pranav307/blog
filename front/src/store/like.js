@@ -21,34 +21,43 @@ export const Likepostapi = createApi({
     // GET likes for a post
     getlike: builder.query({
       query: ({postId}) => ({
-        url: `u/like/${postId}/`, // this will hit the router endpoint
+        url: `u/like/glike/?post=${postId}`, // this will hit the router endpoint
         method: "GET",
         // backend must filter likes by post
       }),
       providesTags: (result, error, postId) => [{ type: "like", id: postId }],
     }),
     // POST like for a post
-    postlikes: builder.mutation({
-      query: ({postId}) => ({
-        url: `u/${postId}/li/`, // matches your Django path("<int:post>/li/")
-        method: "POST",
-      }),
-      invalidatesTags: (result, error, postId) => [{ type: "like", id: postId }],
-      async onQueryStarted(postId, { dispatch, queryFulfilled }) {
-        const patch = dispatch(
-          Likepostapi.util.updateQueryData("getlike", postId, (draft) => {
-            const index = draft.findIndex((l) => l.user === user?.id);
-            if (index !== -1) draft.splice(index, 1);
-            else draft.unshift({ id: Date.now(), user: user?.id, _optimistic: true });
-          })
-        );
-        try {
-          await queryFulfilled;
-        } catch {
-          patch.undo();
+   postlikes: builder.mutation({
+  query: ({ postId }) => ({
+    url: `u/like/?post=${postId}`,
+    method: "POST",
+  }),
+  invalidatesTags: (result, error, { postId }) => [
+    { type: "like", id: postId },
+  ],
+
+  async onQueryStarted({ postId }, { dispatch, queryFulfilled }) {
+    const patch = dispatch(
+      Likepostapi.util.updateQueryData(
+        "getlike",
+        { postId },
+        (draft) => {
+          if (typeof draft?.liked === "boolean") {
+            draft.liked = !draft.liked;
+          }
         }
-      },
-    }),
+      )
+    );
+
+    try {
+      await queryFulfilled;
+    } catch {
+      patch.undo();
+    }
+  },
+}),
+
   }),
 });
 

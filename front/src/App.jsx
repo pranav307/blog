@@ -33,6 +33,7 @@ function App() {
   <Route path="/sign" element={<Signup />} />
 
   <Route element={<Protectedroute />}>
+    <Route path="" element={<Postlist />} />
     <Route path="/gl" element={<Userarticlelist />} />
     <Route path="/article/:id" element={<Userarticlebyid />} />
     <Route path="/cre" element={<Postcreate />} />
