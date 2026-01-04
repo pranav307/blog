@@ -44,9 +44,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     # "django_celery_results",
+    'django_filters',
     "django_redis",
     "user.apps.UserConfig",
-    'django_filters',
+    
 ]
 
 MIDDLEWARE = [
