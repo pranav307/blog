@@ -123,7 +123,7 @@ class ProfileView(APIView):
 
 def clear_cache_key():
     redis =get_redis_connection("default")
-    keys =redis.keys("user_*_page*")
+    keys =redis.keys("user_*_cat_*_search_*_page_*")
     if keys:
         redis.delete(*keys)
 
@@ -373,7 +373,7 @@ class Commentview(viewsets.ModelViewSet):
 
 ###
 #post list view
-@method_decorator(vary_on_headers("Authorization"),name="list")
+# @method_decorator(vary_on_headers("Authorization"),name="list")
 @method_decorator(cache_page(60*5),name="list")
 class Articlelist(viewsets.ModelViewSet):
 
@@ -389,7 +389,10 @@ class Articlelist(viewsets.ModelViewSet):
     def get_cache_key(self,request):
         user_id =request.user.id if request.user.is_authenticated else None
         page=request.query_params.get("page",1)
-        return f"user_{user_id}_page{page}"
+        category = request.query_params.get("category", "")
+        search = request.query_params.get("search", "").strip().lower()
+
+        return f"user_{user_id}_cat_{category}_search_{search}_page_{page}"
     
     def list(self, request, *args, **kwargs):
        cache_key=self.get_cache_key(request)
