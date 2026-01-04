@@ -20,7 +20,7 @@ urlpatterns = [
    # path("<int:post>/li/",LikePostview.as_view({"post":"create"}),name="likes"),
    path("",include(router.urls)),
    path("plist/",Articlehai.as_view(),name="userpost"),
-   path("ard/<int:id>/",Postgpd.as_view(),name="pgpd"),
+   path("ard/<int:pk>/",Postgpd.as_view(),name="pgpd"),
    path("me/<int:post_id>/",ImageHandling.as_view(),name="media"),
    path("t/",dashboard),
    path("c/delete/", CommentDeleteByPost.as_view())
