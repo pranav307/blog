@@ -27,6 +27,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.throttling import UserRateThrottle,SimpleRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from .filters import PostarticleFilter
 User = get_user_model()
 
 def home(request):
@@ -380,7 +381,8 @@ class Articlelist(viewsets.ModelViewSet):
     serializer_class=Postseriallizer
     permission_classes=[Commentpermission]
     filter_backends = [DjangoFilterBackend,filters.SearchFilter]
-    filterset_fields = ['category']
+    # filterset_fields = ['category']
+    filterset_class=PostarticleFilter
     search_fields = ['title','description']
     # search_fields = ['=name']  # Exact match
 
