@@ -228,13 +228,25 @@ class LikePostview(viewsets.ModelViewSet):
    
         
     
-    def list(self, request, *args, **kwargs):
+    @action(detail=False, methods=["GET"])
+    def glike(self, request):
         post_id = request.query_params.get("post")
+
         if not post_id:
-            return self.queryset.none()
-        reponse=self.queryset.filter(post_id=post_id)
-        serializer=self.get_serializer(reponse,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response(
+                {"error": "post query parameter is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        liked = self.queryset.filter(
+            post_id=post_id,
+            user=request.user
+        ).exists()
+
+        return Response(
+            {"liked": liked},
+            status=status.HTTP_200_OK
+        )
 
     def create(self, request, *args, **kwargs):
         post_id = request.query_params.get("post")
