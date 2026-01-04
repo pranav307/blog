@@ -25,6 +25,8 @@ from django.core.cache import cache
 from django_redis import get_redis_connection
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.throttling import UserRateThrottle,SimpleRateThrottle
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 User = get_user_model()
 
 def home(request):
@@ -377,6 +379,10 @@ class Articlelist(viewsets.ModelViewSet):
     queryset=Postarticle.objects.all()
     serializer_class=Postseriallizer
     permission_classes=[Commentpermission]
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter]
+    filterset_fields = ['category']
+    search_fields = ['title','category','description']
+    # search_fields = ['=name']  # Exact match
 
     def get_cache_key(self,request):
         user_id =request.user.id if request.user.is_authenticated else None

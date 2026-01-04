@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     # "django_celery_results",
     "django_redis",
-    "user.apps.UserConfig"
+    "user.apps.UserConfig",
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +126,8 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES':{
         'burst':'3/min',
         'sustained': '1000/day'
-    }
+    },
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 } 
 
 

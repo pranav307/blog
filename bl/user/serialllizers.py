@@ -53,7 +53,7 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 #profile seriallizer
 class Profileseriallizer(serializers.ModelSerializer):
-    
+    user=UserSerializer(read_only=True)
     class Meta:
         model=Profile
         fields = [
@@ -69,7 +69,8 @@ class Profileseriallizer(serializers.ModelSerializer):
             "slug",
             "created_at",
             "updated_at",
-            'user'
+            'user',
+            
         ]
         # read_only_fields = ["slug", "created_at", "updated_at"]
         extra_kwargs = {
