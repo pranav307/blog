@@ -381,7 +381,7 @@ class Articlelist(viewsets.ModelViewSet):
     permission_classes=[Commentpermission]
     filter_backends = [DjangoFilterBackend,filters.SearchFilter]
     filterset_fields = ['category']
-    search_fields = ['title','category','description']
+    search_fields = ['title','description']
     # search_fields = ['=name']  # Exact match
 
     def get_cache_key(self,request):
