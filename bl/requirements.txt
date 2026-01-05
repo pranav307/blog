@@ -32,3 +32,4 @@ supabase-functions==2.27.0
 mysqlclient==2.2.7
 dj-database-url==3.0.1
 django-filter==23.2
+python-decouple==3.8
