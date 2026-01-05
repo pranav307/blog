@@ -409,7 +409,7 @@ class Articlelist(viewsets.ModelViewSet):
     
 ###
 #image and video handling
-MAX_VIDEO_SIZE = 50 * 1024 * 1024
+MAX_VIDEO_SIZE = 50 * 1024 * 1024 #50mb
 class ImageHandling(APIView):
     def post(self, request,post_id=None):
         file = request.FILES.get("file")

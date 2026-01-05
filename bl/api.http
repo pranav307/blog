@@ -21,6 +21,10 @@ Content-Type: application/json
 
 ###
 # GET http://127.0.0.1:8000/verifyurl/Mw/d14qnj-abeb34d9e4113fff3c8344d83a564230/
+
+###
+GET https://blog-production-14ae.up.railway.app/u/pro/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3OTc5NDI3LCJpYXQiOjE3Njc1NDc0MjcsImp0aSI6ImJiOGUwZTc4N2NlYTQ0NDBiNGU2NmIxNWIzN2UwNTQzIiwidXNlcl9pZCI6IjQifQ.0vhS3Q4PTqOi4p9tKWxNLSVoWs8hhGJ2VMnyYdLuuP4
 ###
 PATCH  http://127.0.0.1:8000/u/pro/
 Content-Type: application/json
@@ -124,4 +128,4 @@ POST https://blog-production-14ae.up.railway.app/u/like/?post=3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3Njk0Mzc5LCJpYXQiOjE3NjcyNjIzNzksImp0aSI6ImQ1NjQzMjc5MDFjMTQxNjJhMzg5NmVkOTJjNjY5MDM0IiwidXNlcl9pZCI6IjIifQ.oJDuVS6nWl1anTmMSIUBw4Gsqb2bSCVqhChMMheJbu0
 
 ###
-GET https://blog-production-14ae.up.railway.app/u/pl/
+GET https://blog-production-14ae.up.railway.app/u/pl/?search=f
