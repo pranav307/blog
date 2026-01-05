@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'commando',
     'rest_framework',
     # "django_celery_results",
     'django_filters',
