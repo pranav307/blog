@@ -8,6 +8,8 @@ function CommentItem({ comment }) {
 
   return (
     <div className="ml-5 mt-4 border-l border-gray-300 pl-4">
+
+      <h1>User:{comment.user_name}</h1>
       <p className="text-gray-800">{comment.content}</p>
 
       <small className="text-gray-500 text-sm">

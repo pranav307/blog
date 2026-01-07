@@ -31,7 +31,7 @@ function Postlist() {
                 <h1 className="text-lg font-semibold text-gray-800">
                   {item.title}
                 </h1>
-
+                 <p>{item.description.split(" ").slice(0,5).join(" ")}...</p>
                 <div className="flex items-center gap-3 mt-3">
                   <Likecreate id={item.id} />
                   <span className="text-sm text-gray-600">

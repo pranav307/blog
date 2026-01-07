@@ -12,7 +12,9 @@ function Postcreate() {
   const [postcreate, error] = usePostcreateMutation();
   const [articlepatch, { error: err }] = useArticlepatchMutation();
 
-  const { data } = useGetarticleQuery(id);
+  const { data } = useGetarticleQuery(id,{
+      skip: !id
+  });
 
   const [postdata, setpostdata] = useState({
     title: "",

@@ -1,101 +1,168 @@
-import { useEffect, useState } from "react"
-import { useLazyProfilegetQuery, useProfileMutation } from "../../store/apirtk"
+import { useEffect, useState } from "react";
+import {
+  useLazyProfilegetQuery,
+  useProfileMutation
+} from "../../store/apirtk";
 
 function Profile() {
-  const [updateProfile, { error, isLoading }] = useProfileMutation()
-  const [getProfile, { data, isFetching }] = useLazyProfilegetQuery()
+  const [updateProfile, { error, isLoading }] = useProfileMutation();
+  const [getProfile, { data, isFetching }] = useLazyProfilegetQuery();
 
   const [prodata, setProData] = useState({
     display_name: "",
     bio: "",
     location: "",
-    website: ""
-  })
+    website: "",
+    twitter: "",
+    linkedin: "",
+    github: "",
+    profile_image: null
+  });
 
-  //  fetch profile on mount
   useEffect(() => {
-    getProfile()
-  }, [getProfile])
+    getProfile();
+  }, [getProfile]);
 
-  //  fill form when data arrives
   useEffect(() => {
     if (data) {
       setProData({
         display_name: data.display_name || "",
         bio: data.bio || "",
         location: data.location || "",
-        website: data.website || ""
-      })
+        website: data.website || "",
+        twitter: data.twitter || "",
+        linkedin: data.linkedin || "",
+        github: data.github || "",
+        profile_image: null
+      });
     }
-  }, [data])
+  }, [data]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setProData(prev => ({
+    const { name, value, files } = e.target;
+    setProData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: files ? files[0] : value
+    }));
+  };
 
   const handleSubmit = async () => {
+    const formData = new FormData();
+    Object.entries(prodata).forEach(([k, v]) => v && formData.append(k, v));
+
     try {
-      await updateProfile(prodata).unwrap()
-      console.log("Profile updated successfully")
+      await updateProfile(formData).unwrap();
+      alert("Profile updated");
     } catch (err) {
-      console.log("Update failed:", err)
+      console.error(err);
     }
-  }
+  };
 
   return (
-    <div>
-      {isFetching && <p>Loading profile...</p>}
+    <div className="mx-auto mt-20 max-w-2xl rounded-lg bg-white p-6 shadow">
+      <h1 className="mb-6 text-xl font-semibold">Edit Profile</h1>
 
-      <label>
-        Display Name
-        <input
-          type="text"
-          name="display_name"
-          value={prodata.display_name}
-          onChange={handleChange}
-        />
-      </label>
+      {isFetching && <p className="text-sm text-gray-500">Loading…</p>}
 
-      <label>
-        Bio
-        <textarea
-          name="bio"
-          value={prodata.bio}
-          onChange={handleChange}
-        />
-      </label>
+      <div className="space-y-4 flex flex-col">
 
-      <label>
-        Location
-        <input
-          type="text"
-          name="location"
-          value={prodata.location}
-          onChange={handleChange}
-        />
-      </label>
+        <div>
+          <label className="block text-sm font-medium">Display Name</label>
+          <input
+            name="display_name"
+            value={prodata.display_name}
+            onChange={handleChange}
+            className="mt-1 w-full rounded border px-3 py-2 focus:outline-none focus:ring"
+          />
+        </div>
 
-      <label>
-        Website
-        <input
-          type="url"
-          name="website"
-          value={prodata.website}
-          onChange={handleChange}
-        />
-      </label>
+        <div>
+          <label className="block text-sm font-medium">Bio</label>
+          <textarea
+            name="bio"
+            value={prodata.bio}
+            onChange={handleChange}
+            rows={4}
+            className="mt-1 w-full rounded border px-3 py-2 focus:outline-none focus:ring"
+          />
+        </div>
 
-      <button onClick={handleSubmit} disabled={isLoading}>
-        {isLoading ? "Saving..." : "Submit"}
-      </button>
+        <div>
+          <label className="block text-sm font-medium">Location</label>
+          <input
+            name="location"
+            value={prodata.location}
+            onChange={handleChange}
+            className="mt-1 w-full rounded border px-3 py-2 focus:outline-none focus:ring"
+          />
+        </div>
 
-      {error && <p>{error?.data?.message || "Something went wrong"}</p>}
+        <div>
+          <label className="block text-sm font-medium">Website</label>
+          <input
+            name="website"
+            value={prodata.website}
+            onChange={handleChange}
+            className="mt-1 w-full rounded border px-3 py-2 focus:outline-none focus:ring"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium">Twitter</label>
+          <input
+            name="twitter"
+            value={prodata.twitter}
+            onChange={handleChange}
+            className="mt-1 w-full rounded border px-3 py-2 focus:outline-none focus:ring"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium">LinkedIn</label>
+          <input
+            name="linkedin"
+            value={prodata.linkedin}
+            onChange={handleChange}
+            className="mt-1 w-full rounded border px-3 py-2 focus:outline-none focus:ring"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium">GitHub</label>
+          <input
+            name="github"
+            value={prodata.github}
+            onChange={handleChange}
+            className="mt-1 w-full rounded border px-3 py-2 focus:outline-none focus:ring"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium">Profile Image</label>
+          <input
+            type="file"
+            name="profile_image"
+            onChange={handleChange}
+            className="mt-1 w-full text-sm"
+          />
+        </div>
+
+        <button
+          onClick={handleSubmit}
+          disabled={isLoading}
+          className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+        >
+          {isLoading ? "Saving…" : "Save Changes"}
+        </button>
+
+        {error && (
+          <p className="text-sm text-red-500">
+            {error?.data?.message || "Update failed"}
+          </p>
+        )}
+      </div>
     </div>
-  )
+  );
 }
 
-export default Profile
+export default Profile;
