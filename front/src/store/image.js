@@ -9,7 +9,7 @@ export const Imageapi=createApi({
         prepareHeaders:async(headers)=>{
              const token = localStorage.getItem("access")
       if (token) headers.set("Authorization", `Bearer ${token}`)
-      headers.set("Content-Type", "application/json")
+      
       return headers
     
         }

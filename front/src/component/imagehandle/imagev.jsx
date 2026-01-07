@@ -27,7 +27,14 @@ function Imagevideo() {
       alert("Uploaded successfully");
       setFile(null);
     } catch (err) {
-      console.log(err?.data?.message);
+      console.log(error?.data?.message);
+      console.log("RTK error:", err)
+
+  console.log(
+    err?.data?.error ||
+    err?.data?.message ||
+    "Upload failed"
+  )
     }
   };
 
