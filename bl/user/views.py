@@ -415,9 +415,6 @@ from rest_framework.parsers import MultiPartParser, FormParser
 MAX_VIDEO_SIZE = 50 * 1024 * 1024  # 50 MB
 MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10 MB
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 
 class ImageHandling(APIView):
     parser_classes = (MultiPartParser, FormParser)
