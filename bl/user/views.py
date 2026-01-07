@@ -414,8 +414,14 @@ from django.db import transaction
 from rest_framework.parsers import MultiPartParser, FormParser
 MAX_VIDEO_SIZE = 50 * 1024 * 1024  # 50 MB
 MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10 MB
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 class ImageHandling(APIView):
-    parser_classes=[MultiPartParser,FormParser]
+    parser_classes = (MultiPartParser, FormParser)
+
     def post(self, request, post_id=None):
         file = request.FILES.get("file")
 
@@ -427,62 +433,41 @@ class ImageHandling(APIView):
 
         content_type = file.content_type or ""
 
-        # Determine media type
         if content_type.startswith("image/"):
             media_type = "image"
             folder = "images"
-            max_size = MAX_IMAGE_SIZE
-
         elif content_type.startswith("video/"):
             media_type = "video"
             folder = "videos"
-            max_size = MAX_VIDEO_SIZE
-
         else:
             return Response(
                 {"error": "Unsupported file type"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Size validation
-        if file.size > max_size:
+        try:
+            file_url = upload_file_to_supabase(file, folder)
+
+            media = Mediahandle.objects.create(
+                file_url=file_url,
+                media_type=media_type,
+                post_id=post_id
+            )
+
             return Response(
                 {
-                    "error": f"{media_type.capitalize()} must be less than {max_size // (1024 * 1024)}MB"
+                    "media_id": media.id,
+                    "file_url": file_url,
+                    "media_type": media_type
                 },
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_201_CREATED
             )
 
-        try:
-            with transaction.atomic():
-                file_url = upload_file_to_supabase(file, folder)
-
-                media = Mediahandle.objects.create(
-                    file_url=file_url,
-                    media_type=media_type,
-                    post_id=post_id
-                )
-
-        except Exception as exc:
+        except Exception as e:
             return Response(
-                {"error": str(exc)},
+                {"error": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-        return Response(
-            {
-                "media_id": media.id,
-                "file_url": media.file_url,
-                "media_type": media.media_type,
-                "attached_to_post": bool(post_id)
-            },
-            status=status.HTTP_201_CREATED
-        )
-
-
-         
-
-
     # def get(self,request,post_id=None):
 
 
