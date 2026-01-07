@@ -102,11 +102,11 @@ class Recursivecommentserializer(serializers.Serializer):
 class Commentserializer(serializers.ModelSerializer):
     replies_count = serializers.IntegerField(read_only=True)
     replies=Recursivecommentserializer(many=True,read_only=True)
-    user=serializers.StringRelatedField()
+    user_name =serializers.CharField(source="user.profile.display_name")
 
     class Meta:
         model=Comment
-        fields=['id','user','content','parent','post','replies','created_at','replies_count']
+        fields=['id','user_name','content','parent','post','replies','created_at','replies_count']
 
 #like seriallizer
 class Likeseriallizer(serializers.ModelSerializer):
