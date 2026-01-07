@@ -411,9 +411,11 @@ class Articlelist(viewsets.ModelViewSet):
 #image and video handling
 
 from django.db import transaction
+from rest_framework.parsers import MultiPartParser, FormParser
 MAX_VIDEO_SIZE = 50 * 1024 * 1024  # 50 MB
 MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10 MB
 class ImageHandling(APIView):
+    parser_classes=[MultiPartParser,FormParser]
     def post(self, request, post_id=None):
         file = request.FILES.get("file")
 
