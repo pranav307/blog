@@ -19,7 +19,7 @@ from django.http import Http404
 from rest_framework import viewsets
 from django.db.models import Q,Count
 from rest_framework.decorators import action
-from bl.utils.storage import upload_file_to_supabase
+
 from django.http import HttpResponse
 from django.core.cache import cache
 from django_redis import get_redis_connection
