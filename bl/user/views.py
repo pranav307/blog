@@ -453,3 +453,13 @@ class CommentDeleteByPost(APIView):
 
         Comment.objects.filter(post_id=post_id).delete()
         return Response(status=204)  
+
+from celery.result import AsyncResult
+
+class TaskStatus(APIView):
+    def get(self, request, task_id):
+        result = AsyncResult(task_id)
+        return Response({
+            "state": result.state,
+            "result": result.result if result.ready() else None
+        })

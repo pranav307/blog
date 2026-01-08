@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'commando',
     'rest_framework',
-    # "django_celery_results",
+    "django_celery_results",
     'django_filters',
     "django_redis",
     "user.apps.UserConfig",
