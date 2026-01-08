@@ -5,7 +5,7 @@ from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 from .views import RegisterUser,EmailTokenObtainPairView,VerifyEmailView \
 ,ProfileView,LikePostview,Articlehai,Articlelist,\
-Commentview,Postgpd,ImageHandling,dashboard,CommentDeleteByPost,TaskStatus
+Commentview,Postgpd,ImageHandling,dashboard,CommentDeleteByPost
 
 router=DefaultRouter()
 router.register('like',LikePostview,basename="likepost")
@@ -25,5 +25,5 @@ urlpatterns = [
    path("me/<int:post_id>/",ImageHandling.as_view(),name="media"),
    path("t/",dashboard),
    path("c/delete/", CommentDeleteByPost.as_view()),
-   path("task/<int:task_id>/",TaskStatus.as_view(),name="taskhai")
+   # path("task/<int:task_id>/",TaskStatus.as_view(),name="taskhai")
 ]

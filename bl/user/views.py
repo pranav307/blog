@@ -415,29 +415,61 @@ from django.db import transaction
 MAX_VIDEO_SIZE = 50 * 1024 * 1024  # 50 MB
 MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10 MB
 from rest_framework.parsers import MultiPartParser, FormParser
-from .tasks import handle_media_upload
+from bl.utils.storage import upload_file_to_supabase
 class ImageHandling(APIView):
-    
-
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, post_id=None):
         file = request.FILES.get("file")
+
         if not file:
-            return Response({"error": "No file provided"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "No file provided"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        # Celery task call
-        task = handle_media_upload.delay(
-            file.read(),         # bytes
-            
-            file.content_type,   # mime type
-            post_id
-        )
+        content_type = file.content_type or ""
 
-        return Response({
-            "task_id": task.id,
-            "status": "Upload started in background"
-        }, status=status.HTTP_202_ACCEPTED)
+        # Determine media type
+        if content_type.startswith("image/"):
+            media_type = "image"
+            folder = "images"
+        elif content_type.startswith("video/"):
+            media_type = "video"
+            folder = "videos"
+        else:
+            return Response(
+                {"error": "Unsupported file type"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            #  Upload directly
+            file_url = upload_file_to_supabase(file, folder)
+
+            #  Save immediately in DB
+            media = Mediahandle.objects.create(
+                file_url=file_url,
+                media_type=media_type,
+                post_id=post_id
+            )
+
+            return Response(
+                {
+                    "media_id": media.id,
+                    "file_url": file_url,
+                    "media_type": media_type
+                },
+                status=status.HTTP_201_CREATED
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+   
        
 
            
@@ -454,12 +486,12 @@ class CommentDeleteByPost(APIView):
         Comment.objects.filter(post_id=post_id).delete()
         return Response(status=204)  
 
-from celery.result import AsyncResult
+# from celery.result import AsyncResult
 
-class TaskStatus(APIView):
-    def get(self, request, task_id):
-        result = AsyncResult(task_id)
-        return Response({
-            "state": result.state,
-            "result": result.result if result.ready() else None
-        })
+# class TaskStatus(APIView):
+#     def get(self, request, task_id):
+#         result = AsyncResult(task_id)
+#         return Response({
+#             "state": result.state,
+#             "result": result.result if result.ready() else None
+#         })
