@@ -5,7 +5,7 @@ from django.contrib.auth.tokens import default_token_generator
 from .models import Customuser,Mediahandle
 # from django.core.mail import send_mail
 from django.conf import settings
-from bl.utils.supabase import upload_file_to_supabase
+from bl.utils.storage import upload_file_to_supabase
 
 @shared_task(bind=True,autoretry_for=(Exception,),retry_kwargs={"max_retries":3,"countdown":10})
 def handle_media_upload(file_data,content_type, post_id=None):
