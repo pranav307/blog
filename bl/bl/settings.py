@@ -66,7 +66,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'bl.urls'
 CORS_ALLOWED_ORIGINS=[
     'http://localhost:5173',
-#    "https://blog-ten-delta-56.vercel.app",
+   "https://blog-ten-delta-56.vercel.app",
+   
     "https://blog-production-14ae.up.railway.app"
 ]
 
