@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSignapiMutation } from "../store/apirtk";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   const [form, setForm] = useState({
@@ -8,7 +8,7 @@ function Signup() {
     username: "",
     password: "",
   });
-
+  const navigate =useNavigate()
   const [signup, { isLoading, error }] = useSignapiMutation();
 
   const handleChange = (e) => {
@@ -20,6 +20,7 @@ function Signup() {
     try {
       await signup(form).unwrap();
       alert("Signup successful");
+      navigate("/lo")
     } catch (err) {
       console.error(err);
     }
