@@ -1,67 +1,87 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { baseurl } from './apirtk'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseurl } from "./apirtk";
 
 export const Posthome = createApi({
   reducerPath: "postlist",
+
   baseQuery: fetchBaseQuery({
     baseUrl: baseurl,
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("access")
+      const token = localStorage.getItem("access");
 
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
+        headers.set("Authorization", `Bearer ${token}`);
       }
 
-      headers.set("Content-Type", "application/json")
-      return headers
-    }
+      headers.set("Content-Type", "application/json");
+      return headers;
+    },
   }),
-  tagTypes:["list"],
+
+  tagTypes: ["list"],
+
   endpoints: (builder) => ({
+
+    // GET LIST (category + search)
     getitem: builder.query({
-      query: () => ({
-        url: 'u/pl/',
-        method: "GET"
-      }),
-      providesTags:["list"]
+      query: ({ category, search } = {}) => {
+        const params = new URLSearchParams();
+
+         if (category) {
+      const categoryParam = Array.isArray(category) ? category.join(",") : category; //agar array hai tuh string mai banao 
+      params.append("category", categoryParam);
+    }
+        if (search) params.append("search", search);
+
+        const queryString = params.toString();
+        return queryString ? `u/pl/?${queryString}` : `u/pl/`;
+      },
+      providesTags: ["list"],
     }),
-    // d
-    postcreate:builder.mutation({
-      query:(data)=>({
-        url:'u/plist/',
-        method:"POST",
-        body:data
+
+    // CREATE POST
+    postcreate: builder.mutation({
+      query: (data) => ({
+        url: "u/plist/",
+        method: "POST",
+        body: data,
       }),
-      invalidatesTags:["list"],
-      async onQueryStarted(data,{dispatch,queryFulfilled}){
-        const postdata=dispatch(
+      invalidatesTags: ["list"],
+
+      async onQueryStarted(data, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
           Posthome.util.updateQueryData(
-          "getitem" //query name
-          ,undefined //for args we pass  in getitem if any
-          ,(draft)=>{
-            if (!draft) return
-          draft.unshift({
-           
-            ...data,
-            id:Date.now(),
-            _optimistic:true // optional flag
-          })
-         })
-        )
+            "getitem",
+            {}, // same args as list query
+            (draft) => {
+              if (!draft) return;
+              draft.unshift({
+                ...data,
+                id: Date.now(),
+                _optimistic: true,
+              });
+            }
+          )
+        );
 
         try {
-            await queryFulfilled
+          await queryFulfilled;
         } catch (error) {
-          postdata.undo()
+          patchResult.undo();
         }
-      }
+      },
     }),
-    // f
-    getbyid:builder.query({
-      query:(id)=>`u/pl/${id}/`
-      
-    })
-  })
-})
 
-export const { useGetitemQuery,usePostcreateMutation,useGetbyidQuery } = Posthome
+    //  GET BY ID
+    getbyid: builder.query({
+      query: (id) => `u/pl/${id}/`,
+    }),
+
+  }),
+});
+
+export const {
+  useGetitemQuery,
+  usePostcreateMutation,
+  useGetbyidQuery,
+} = Posthome;

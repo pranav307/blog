@@ -13,6 +13,7 @@ import Protectedroute from './component/protect'
 import Imagevideo from './component/imagehandle/imagev'
 import './index.css'
 import Articlebyid from './component/getartbyid'
+import Searchpage from './component/filter/searchpage'
 function App() {
 
 
@@ -31,7 +32,7 @@ function App() {
   <Route path="/a/:id" element={<Articlebyid />} />
 
   <Route path="/sign" element={<Signup />} />
-
+  <Route path='/searchpage' element={<Searchpage/>}></Route>
   <Route element={<Protectedroute />}>
     <Route path="" element={<Postlist />} />
     <Route path="/gl" element={<Userarticlelist />} />
@@ -41,6 +42,7 @@ function App() {
     <Route path="/pro" element={<Profileget />} />
     <Route path="/pp" element={<Profile />} />
     <Route path="/img/:id" element={<Imagevideo />} />
+    
   </Route>
   </Route>
 </Routes>
