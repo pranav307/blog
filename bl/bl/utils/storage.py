@@ -3,9 +3,17 @@ import uuid
 from django.conf import settings
 from .supabase import supabase
 
-def upload_file_to_supabase(file_bytes, content_type, folder="uploads"):
+# bl/utils/storage.py
+import uuid
+from django.conf import settings
+from .supabase import supabase
+
+def upload_file_to_supabase(file, folder="uploads"):
+    content_type = file.content_type
     ext = content_type.split("/")[-1]
     file_name = f"{folder}/{uuid.uuid4()}.{ext}"
+
+    file_bytes = file.read()  # critical fix
 
     supabase.storage.from_(
         settings.SUPABASE_BUCKET

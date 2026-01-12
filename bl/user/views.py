@@ -442,6 +442,17 @@ class ImageHandling(APIView):
                 {"error": "Unsupported file type"},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        if media_type == "image" and file.size > MAX_IMAGE_SIZE:
+           return Response(
+            {"error": "Image exceeds 10MB limit"},
+            status=status.HTTP_400_BAD_REQUEST
+           )
+
+        if media_type == "video" and file.size > MAX_VIDEO_SIZE:
+                return Response(
+                    {"error": "Video exceeds 50MB limit"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         try:
             #  Upload directly
