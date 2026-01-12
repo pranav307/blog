@@ -70,6 +70,9 @@ CORS_ALLOWED_ORIGINS=[
    
     "https://blog-production-14ae.up.railway.app"
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://blog-production-14ae.up.railway.app",
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
